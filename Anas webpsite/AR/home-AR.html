@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع Anas Ahmed</title>
+    <link rel="stylesheet" href="styles-AR.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        html, body {
+            scroll-behavior: smooth;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: white;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 1em;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: black;
+            font-size: 1em;
+            padding: 5px 10px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav ul li a.active {
+            color: #04AA6D;
+            animation: highlight 0.5s ease;
+        }
+
+        nav ul li a:hover {
+            color: #04AA6D;
+        }
+
+        @keyframes highlight {
+            from {
+                color: #333;
+            }
+            to {
+                color: #04AA6D;
+            }
+        }
+
+        .full-screen-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 2em;
+            text-align: right;
+            direction: rtl;
+            position: relative;
+        }
+
+        .about {
+            background-color: #ffffff;
+            border-bottom: 5px solid #04AA6D;
+        }
+
+        .content {
+            margin-left: auto;
+            max-width: 600px;
+        }
+
+        .projects-section {
+            background-color: #f4f4f9;
+            padding: 2em;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative; /* Add relative position to the parent for absolute positioning of the detail box */
+        }
+
+        .project-box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1em;
+            width: 100%;
+            cursor: pointer; /* Add cursor pointer for interactive elements */
+        }
+
+        .project-box img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-left: 1em;
+        }
+
+        .project-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-info h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .projects-button {
+            font-size: 1em;
+            padding: 0.75em 1.5em;
+            border: none;
+            border-radius: 10px;
+            background-color: #04AA6D;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.4s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 1em;
+            align-self: flex-end;
+        }
+
+        .projects-button:hover {
+            background-color: #037f51;
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .projects-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 1em;
+        }
+
+        .social-icons .icon {
+            margin: 0 0.5em;
+            font-size: 2em;
+            color: #333;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icons .icon:hover {
+            color: #04AA6D;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 600px) {
+            .about {
+                padding: 1em;
+            }
+
+            .projects-section {
+                padding: 1em;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            h3 {
+                font-size: 1.2em;
+            }
+
+            .projects-button {
+                font-size: 0.9em;
+                padding: 0.5em 1em;
+            }
+
+            .social-icons .icon {
+                font-size: 1.5em;
+            }
+        }
+
+        /* New styles for the project detail box */
+        .project-detail {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 400px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2em;
+            text-align: center;
+            border-radius: 10px;
+            z-index: 1000;
+            opacity: 0;
+            animation: slideIn 0.5s forwards;
+        }
+
+        .project-detail h2 {
+            margin-top: 0;
+        }
+
+        .project-detail button {
+            margin-top: 1em;
+            padding: 0.5em 1em;
+            border: none;
+            border-radius: 5px;
+            background-color: #04AA6D;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .project-detail button:hover {
+            background-color: #037f51;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translate(-50%, -60%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+            to {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+        }
+
+        .project-detail.hide {
+            display: block; /* الحفاظ على ظهور العنصر أثناء الأنيميشن */
+            animation: slideOut 0.5s forwards; /* تطبيق أنيميشن الإخفاء */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="Rotaco-logo.png" alt="Rotaco Logo" class="logo-img">
+            Rotaco
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#projects" id="nav-projects">المشاريع</a></li>
+                <li><a href="#about" id="nav-home">الصفحة الرئيسية</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div id="about" class="full-screen-section about">
+        <div class="logo-container">
+        </div>
+        <div class="content">
+            <h1>مرحبًا بك في</h1>
+            <h2>موقع Anas Ahmed</h2>
+            <h3>مبرمج مسلم مصري , Frontend / Backend</h3>
+            <div class="social-icons">
+                <a href="https://discord.com/invite/fudcp6yd" target="_blank" class="icon discord"><i class="fab fa-discord"></i></a>
+                <a href="https://youtube.com/@rotaco." target="_blank" class="icon youtube"><i class="fab fa-youtube"></i></a>
+                <a href="" target="_blank" class="icon tiktok"><i class="fab fa-tiktok"></i></a>
+                <a href="" target="_blank" class="icon instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+            <button class="projects-button" onclick="scrollToSection('projects')">مشاريعي</button>
+        </div>
+    </div>
+    <div id="projects" class="full-screen-section projects-section">
+        <div class="project-box" onclick="showProjectDetail('projectA')">
+            <img src="..\image\tm-1.png" alt="Project A">
+            <div class="project-info">
+                <h3>قاطع | Qate3</h3>
+            </div>
+        </div>
+        <div class="project-box" onclick="showProjectDetail('projectB')">
+            <img src="..\image\tm-2.png" alt="Project B">
+            <div class="project-info">
+                <h3>Bestleco</h3>
+            </div>
+        </div>
+        <div class="project-box" onclick="showProjectDetail('projectC')">
+            <img src="..\image\tm-3.png" alt="Project C">
+            <div class="project-info">
+                <h3>ديني هو الحياه</h3>
+            </div>
+        </div>
+        <!-- Project detail boxes -->
+        <div id="projectA" class="project-detail">
+            <div class="project-detail-content">
+                <h2>قاطع | Qate3</h2>
+                <p>قاطع هو موقع يخبرك التطبيقات المقاطعة والبديل لها دعما للقضية الفلسطينية.</p>
+                <button onclick="closeProjectDetail()">إغلاق</button>
+            </div>
+        </div>
+
+        <div id="projectB" class="project-detail">
+            <div class="project-detail-content">
+                <h2>Bestleco</h2>
+                <p>بيست ليكو هو موقع للدردشة أونلاين يدعم القضية الفلسطينية.</p>
+                <button onclick="closeProjectDetail()">إغلاق</button>
+            </div>
+        </div>
+
+        <div id="projectC" class="project-detail">
+            <div class="project-detail-content">
+                <h2>ديني هو الحياه</h2>
+                <p>ديني هو الحياه تطبيق فيه كل ما يخص الدين الإسلامي ويدعم القضية الفلسطينية.</p>
+                <button onclick="closeProjectDetail()">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showProjectDetail(projectId) {
+            const detailBoxes = document.querySelectorAll('.project-detail');
+            detailBoxes.forEach(box => {
+                if (box.id === projectId) {
+                    box.style.display = 'block'; // تأكد من أن العنصر مرئي قبل بدء الأنيميشن
+                    box.classList.remove('hide'); // إزالة أي أنيميشن اختفاء قديم
+                } else {
+                    box.classList.add('hide'); // إخفاء العناصر الأخرى
+                }
+            });
+        }
+
+        function closeProjectDetail() {
+            const detailBoxes = document.querySelectorAll('.project-detail');
+            detailBoxes.forEach(box => {
+                if (box.style.display === 'block') {
+                    box.classList.add('hide'); // إضافة أنيميشن الإخفاء
+                    // بعد انتهاء الأنيميشن، قم بإخفاء العنصر بالكامل
+                    box.addEventListener('animationend', function() {
+                        box.style.display = 'none'; // إخفاء العنصر بالكامل بعد انتهاء الأنيميشن
+                    }, { once: true });
+                }
+            });
+        }
+
+        window.addEventListener('click', function(event) {
+            const detailBoxes = document.querySelectorAll('.project-detail');
+            detailBoxes.forEach(box => {
+                if (event.target === box) {
+                    closeProjectDetail();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
